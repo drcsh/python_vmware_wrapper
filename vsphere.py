@@ -37,7 +37,7 @@ class VSphere:
 
         :param str uri: URL/IP of vSphere to talk to
         :param str username:
-        :param str password: GPG encrypted password
+        :param str password: plain text password.
         :param int port: (optional)
         :param logger logger: 
         """
@@ -63,7 +63,6 @@ class VSphere:
         :return: service_instance
         :rtype vim.ServiceInstance:
         """
-        plain_text_password = decrypt(self._password)
 
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
         context.verify_mode = ssl.CERT_NONE
@@ -73,7 +72,7 @@ class VSphere:
         try:
             service_instance = connect.SmartConnect(host=self.uri,
                                                     user=self._username,
-                                                    pwd=plain_text_password,
+                                                    pwd=self._password,
                                                     port=self.port,
                                                     sslContext=context)
         except Exception as error:
