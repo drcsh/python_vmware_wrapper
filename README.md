@@ -24,7 +24,7 @@ Note that name lookups are slow, especially if you have a few thousand VMs kicki
 of them :) It is advisable to pre-cache them using the uuid lookup. They will then be available by name for subsequent 
 commands. This isn't as nice as I'd like it, but it's a necessary performance workaround.
 
-Note that while the VSphere class abstracts away the operations of pyvmomi, but still presents the objects it's working with in case 
+Note that while the VSphere class abstracts away the operations of pyvmomi, it still presents the objects it's working with in case 
 you want to directly interact with them.
 
 ## Supports
@@ -33,10 +33,12 @@ VMWare vSphere 6.5
 
 ## Design
 
-The idea is for all external code to use the VSphere class and as far as possible not have to concern themselves with 
-what's under the hood. 
+The idea is for the rest of the system it lives in to use the VSphere class and not have to worry at all about the
+underlying API or pyvmomi. The rest of the system should just deal with names of things and the occasional UUID. 
+However, VSphere does hand the managed object over when you look it up, and of course you can fish the object out of the cached
+object list. 
 
-To keep that class manageable in terms of line count and complexity, it farms out the operations to the various 
+To keep the VSphere class manageable in terms of line count and complexity, it farms out the operations to the various 
 functions in support_functions. It injects itself into those functions so that cached objects, all other operations 
 as well as the logger are available to that function. 
 
