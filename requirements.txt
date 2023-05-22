@@ -1,2 +1,2 @@
 pyvmomi==6.7.0.2018.9
-requests==2.22.0
+requests==2.31.0
